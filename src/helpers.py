@@ -100,6 +100,140 @@ def mark_improvements(
     work["is_improvement"] = is_improvement
     return work
 
+def build_yearly_improvement_records(
+    df: pd.DataFrame,
+    *,
+    group_cols: tuple[str, ...] = (
+        "family",
+        "variation",
+    ),
+    metric_col: str = "time_class",
+    year_col: str = "year",
+) -> pd.DataFrame:
+    """Create one best complexity record per problem per year.
+
+    Multiple algorithms for the same problem may appear in the same year.
+    Because the dataset does not contain publication dates within a year,
+    this function uses the best metric value from that year and counts at
+    most one strict improvement per problem-year.
+
+    A strict improvement occurs when the current year's best metric is lower
+    than the best metric observed in all earlier years.
+
+    Returns columns including:
+
+    - previous_best
+    - is_first_classified
+    - is_strict_improvement
+    - improvement_size
+    """
+    required_columns = [
+        *group_cols,
+        year_col,
+        metric_col,
+    ]
+
+    missing_columns = [
+        column
+        for column in required_columns
+        if column not in df.columns
+    ]
+
+    if missing_columns:
+        raise ValueError(
+            f"Missing required columns: {missing_columns}"
+        )
+
+    classified_algorithms = df.dropna(
+        subset=required_columns
+    ).copy()
+
+    classified_algorithms[year_col] = (
+        pd.to_numeric(
+            classified_algorithms[year_col],
+            errors="coerce",
+        )
+    )
+
+    classified_algorithms[metric_col] = (
+        pd.to_numeric(
+            classified_algorithms[metric_col],
+            errors="coerce",
+        )
+    )
+
+    classified_algorithms = (
+        classified_algorithms.dropna(
+            subset=[year_col, metric_col]
+        )
+    )
+
+    classified_algorithms[year_col] = (
+        classified_algorithms[year_col]
+        .astype(int)
+    )
+
+    # Select the best recorded complexity for each problem-year.
+    yearly_best = (
+        classified_algorithms
+        .groupby(
+            [
+                *group_cols,
+                year_col,
+            ],
+            as_index=False,
+        )[metric_col]
+        .min()
+        .sort_values(
+            [
+                *group_cols,
+                year_col,
+            ],
+            kind="stable",
+        )
+        .reset_index(drop=True)
+    )
+
+    # Best complexity observed up to and including the current year.
+    yearly_best["best_so_far"] = (
+        yearly_best
+        .groupby(
+            list(group_cols),
+            sort=False,
+        )[metric_col]
+        .cummin()
+    )
+
+    # Best complexity observed strictly before the current year.
+    yearly_best["previous_best"] = (
+        yearly_best
+        .groupby(
+            list(group_cols),
+            sort=False,
+        )["best_so_far"]
+        .shift(1)
+    )
+
+    yearly_best["is_first_classified"] = (
+        yearly_best["previous_best"].isna()
+    )
+
+    yearly_best["is_strict_improvement"] = (
+        yearly_best["previous_best"].notna()
+        & (
+            yearly_best[metric_col]
+            < yearly_best["previous_best"]
+        )
+    )
+
+    yearly_best["improvement_size"] = (
+        yearly_best["previous_best"]
+        - yearly_best[metric_col]
+    ).where(
+        yearly_best["is_strict_improvement"]
+    )
+
+    return yearly_best
 
 def first_year_per_problem(
     df: pd.DataFrame,

@@ -547,6 +547,11 @@ $p$: characteristic of finite field",O(n^2),,Numerical Analysis
 $d$: number of attributes",,,Combinatorics
 78.0,Stable Matching Problem,Stable Matching Verification,,Stable Marriage Problem,,"Verify that a given matching is stable, given the preferences",$n$: number of men and number of women,,,Combinatorics
 78.0,Stable Matching Problem,Stable Pair Checking,,Stable Marriage Problem,,"Verify that a given pairing is stable, given the preferences",$n$: number of pairs of roommates,,,Combinatorics
+79.0,Longest Path Problem,longest s-t path problem,,,,"Given a weighted directed or undirected graph G = (V,E,w), source and terminal vertices s and t, and a number k, find the path of maximum weight that visits k distinct vertices in V, starting at s and ending at t.","$n$: number of vertices
+$m$: number of edges
+$k$: number of vertices in path",,,
+79.0,Longest Path Problem,Longest Trail Problem,,,,"Let us consider a graph with n vertexes and m edges. The problem is to search the longest edge-simple path. Here edge-simple means no edge occurs in the path twice, but vertexes can occur several times. The longest means the path has the maximal possible number of edges.","$n$: number of vertices
+$m$: number of edges",,,
 79.0,Longest Path Problem,Longest Path on Interval Graphs,,,,"The longest path problem is the problem of finding a path of maximum length in a graph.
 
 A graph $G$ is called interval graph if its vertices can be put in a one-to-one correspondence with a family $F$ of intervals on the real line such that two vertices are adjacent in $G$ if and only if the corresponding intervals intersect; $F$ is called an intersection model for $G$.","$n$: number of vertices

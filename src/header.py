@@ -20,7 +20,7 @@ PROCESSED_DIR.mkdir(parents=True, exist_ok=True)
 PLOTS_DIR.mkdir(parents=True, exist_ok=True)
 
 # Source spreadsheet (the AlgoWiki workbook that lives in data/)
-XLSX_PATH = DATA_DIR / "AlgoWiki algorithms (our copy) (2).xlsx"
+XLSX_PATH = DATA_DIR / "AlgoWiki algorithms (our copy) (3).xlsx"
 
 # Sheets we care about
 QUANTUM_SHEET = "Quantum Algorithms"
