@@ -14,6 +14,31 @@ import matplotlib.pyplot as plt
 import matplotlib.ticker as mtick
 import pandas as pd
 from matplotlib.ticker import MaxNLocator
+from matplotlib.ticker import FixedLocator, FixedFormatter
+
+def set_big_o_complexity_axis(ax):
+    """
+    Display AlgoWiki's ordinal complexity scale using familiar
+    Big-O notation while preserving the underlying numeric values.
+    """
+
+    tick_positions = [1, 2, 3, 4, 5, 6, 7, 8]
+
+    tick_labels = [
+        "O(1)",
+        "O(log n)",
+        "O(n)",
+        "O(n log n)",
+        "O(n²)",
+        "O(n³)",
+        "O(n⁴)",
+        "O(2ⁿ)"
+    ]
+
+    ax.yaxis.set_major_locator(FixedLocator(tick_positions))
+    ax.yaxis.set_major_formatter(FixedFormatter(tick_labels))
+
+    ax.set_ylim(0.8, 8.2)
 
 from .header import (
     CUR_YEAR,

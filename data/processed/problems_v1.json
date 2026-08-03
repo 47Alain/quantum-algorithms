@@ -4378,7 +4378,7 @@
     "parameters": "$n$: number of digits/bits in the order of the finite group",
     "upper_bound": NaN,
     "lower_bound": NaN,
-    "domain": "Statistics"
+    "domain": "Combinatorics"
   },
   {
     "family_id": 124.0,

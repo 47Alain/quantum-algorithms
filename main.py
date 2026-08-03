@@ -34,9 +34,10 @@ from src.plots.improvements_per_year import plot_improvements_per_year
 from src.plots.problems_per_year import plot_problems_per_year
 
 # Additional research analyses
-from src.plots.time_to_first_improvement import plot_time_to_first_improvement
+from src.plots.time_to_first_improvement_survival import generate_time_to_first_improvement_plots
 from src.plots.improvement_magnitude_distribution import plot_improvement_magnitude_distribution
 from src.plots.family_improvements_by_decade import plot_family_improvements_by_decade
+from src.plots.family_improvements_by_decade import plot_family_improvement_magnitude_by_decade
 from src.plots.improvement_magnitude_by_family import plot_improvement_magnitude_by_family
 from src.plots.complexity_transition_heatmap import plot_complexity_transition_heatmap
 from src.plots.time_space_pareto_frontier import plot_time_space_pareto_frontier
@@ -76,14 +77,15 @@ def main() -> None:
 
     # ---------- Additional quantum-improvement analyses ------------------
     print("\n  >>> additional quantum-improvement analyses")
+    generate_time_to_first_improvement_plots()
     plot_improvement_magnitude_by_family()
     plot_improvement_magnitude_distribution()
-    plot_time_to_first_improvement()
     plot_complexity_transition_heatmap()
     plot_time_space_pareto_frontier()
 
     # Existing family-by-decade analysis
     plot_family_improvements_by_decade()
+    plot_family_improvement_magnitude_by_decade()
 
     print("\nDone.")
 
